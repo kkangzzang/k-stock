@@ -5,14 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 주식 현재가</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <h1>내 주식 현재가</h1>
-    <div id="stock-price">삼성전자: 불러오는 중...</div>
-    <input type="text" id="stock-input" placeholder="메시지를 입력하세요..." style="margin-top:10px; width:100%; padding:8px; font-size:1rem;" />
-    <script src="script.js?cb=202607231105"></script>
+    <div id="stock-price">불러오는 중...</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            const priceDiv = document.getElementById('stock-price');
+            const ticker = '005930.KQ'; // 삼성전자 (KOSDAQ/KOSPI 종목코드에 따라 다름)
+
+            try {
+                const response = await fetch(
+                    `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`
+                );
+                const data = await response.json();
+                const price = data.quoteResponse.result[0].regularMarketPrice;
+
+                priceDiv.textContent = `삼성전자: ${price} KRW`;
+            } catch (error) {
+                priceDiv.textContent = `${ticker}: 데이터 불러오기 오류`;
+            }
+        });
+    </script>
 </body>
 
 </html>
