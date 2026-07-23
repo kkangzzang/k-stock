@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const priceDiv = document.getElementById('stock-price');
   // Fetch real-time stock price using Yahoo Finance API
-  const ticker = 'AAPL';
+  const ticker = '005930.KS';
   fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`)
     .then(response => response.json())
     .then(data => {
@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const price = result?.regularMarketPrice;
       const currency = result?.currency;
       if (price !== undefined) {
-        priceDiv.textContent = `${ticker}: ${price} ${currency}`;
+        const name = result?.longName || '삼성전자';
+        priceDiv.textContent = `${name}: ${price} ${currency}`;
         const priceInput = document.getElementById('stock-input');
         priceInput.value = `${ticker}: ${price} ${currency}`;
       } else {
