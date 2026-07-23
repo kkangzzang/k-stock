@@ -2,9 +2,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const priceDiv = document.getElementById('stock-price');
   // Fetch real-time stock price using Yahoo Finance API
   const ticker = '005930.KS';
-  fetch(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`)
+  // Use a CORS proxy to avoid same‑origin restrictions
+  const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(`https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`);
+  fetch(proxyUrl)
     .then(response => response.json())
-    .then(data => {
+    .then(wrapper => {
+      // The actual Yahoo response is inside wrapper.contents as a JSON string
+      const data = JSON.parse(wrapper.contents);
       const result = data.quoteResponse.result[0];
       const price = result?.regularMarketPrice;
       const currency = result?.currency;
@@ -12,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const name = result?.longName || '삼성전자';
         priceDiv.textContent = `${name}: ${price} ${currency}`;
         const priceInput = document.getElementById('stock-input');
-        priceInput.value = `${ticker}: ${price} ${currency}`;
+        priceInput.value = `${name}: ${price} ${currency}`;
       } else {
         priceDiv.textContent = `${ticker}: 데이터 불러오기 실패`;
       }
