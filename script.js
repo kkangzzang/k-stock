@@ -2,10 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const priceDiv = document.getElementById('stock-price');
   // Fetch real-time stock price using Yahoo Finance API
   const ticker = '005930.KS';
-  // Use AllOrigins raw endpoint to fetch Naver Finance page (Korean market) and parse price
-  const naverUrl = `https://finance.naver.com/item/main.nhn?code=005930`;
-  const proxyUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(naverUrl);
-  fetch(proxyUrl)
+  // Use cors.bridged.cc proxy to bypass CORS restrictions
+  const proxyUrl = 'https://cors.bridged.cc/' + naverUrl;
     .then(response => response.text())
     .then(html => {
       const parser = new DOMParser();
